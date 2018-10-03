@@ -19,12 +19,12 @@ export const aggregateNaturalAxisLimits = (data = []) => {
   )
 
   return {
-    ceiling: Math.ceil(highest),
-    floor: Math.floor(lowest)
+    max: Math.ceil(highest),
+    min: Math.floor(lowest)
   }
 }
 
-export const getAxisLimits = (lowest = 0, highest = 0) => {
+export const getAxisLimits = ({ min = 0, max = 0 }) => {
   const factorList = [
     0.1,
     0.2,
@@ -43,18 +43,18 @@ export const getAxisLimits = (lowest = 0, highest = 0) => {
     5000
   ]
 
-  const difference = highest - lowest
+  const difference = max - min
   const tick = factorList.find(f => difference / f >= 7 && difference / f <= 13)
 
   if (!tick)
     return {
-      lowerLimit: lowest,
-      upperLimit: highest,
+      lowerLimit: min,
+      upperLimit: max,
       tick: difference
     }
 
-  const lowerLimit = lowest - (lowest % tick)
-  const upperLimit = highest + tick - (highest % tick)
+  const lowerLimit = min - (min % tick)
+  const upperLimit = max + tick - (max % tick)
 
   return {
     lowerLimit,

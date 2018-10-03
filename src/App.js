@@ -108,17 +108,51 @@ class App extends Component {
     }))
 
     return (
-      <div className="App">
-        <main style={{ display: 'flex' }}>
+      <div className="App" style={{ height: '100vh' }}>
+        <main
+          style={{ display: 'flex', alignItems: 'stretch', height: '100%' }}
+        >
           <List dataSource={listData} />
           <div
             style={{
-              maxHeight: '500px',
+              // maxHeight: '500px',
               width: '100%',
               padding: '1rem',
               backgroundColor: 'whitesmoke'
             }}
           >
+            {/* <svg
+              width={100}
+              height={50}
+              style={{ backgroundColor: 'blue' }}
+              viewBox="0 0 20 10"
+            >
+              <polygon fill={'red'} stroke-width={0} points="0,10 20,10 10,0" />
+            </svg>
+            <svg
+              width={'100%'}
+              style={{ backgroundColor: 'blue' }}
+              viewBox="0 0 20 10"
+            >
+              <polygon fill={'red'} stroke-width={0} points="0,10 20,10 10,0" />
+            </svg>
+            <svg
+              width="100%"
+              height="50px"
+              viewBox="0 0 20 10"
+              style={{ backgroundColor: 'blue' }}
+            >
+              <polygon fill={'red'} stroke-width="0" points="0,10 20,10 10,0" />
+            </svg>
+            <svg
+              width="100%"
+              height="50px"
+              viewBox="0 0 20 10"
+              style={{ backgroundColor: 'blue' }}
+              preserveAspectRatio="none"
+            >
+              <polygon fill={'red'} stroke-width="0" points="0,10 20,10 10,0" />
+            </svg> */}
             <OHLC
               dataSource={state.data.allIds.map(id => ({
                 ...state.data.byIds[id],

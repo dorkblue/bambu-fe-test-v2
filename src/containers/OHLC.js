@@ -2,8 +2,8 @@ import React from 'react'
 
 import Grid from '../components/Grid'
 import Axis from '../components/Axis'
-import * as GridLines from '../components/GridLines'
-import Period from '../components/Period'
+// import * as GridLines from '../components/GridLines'
+import Symbol from '../components/Symbol'
 
 import { GraphSettings } from '../Context'
 
@@ -13,11 +13,21 @@ export default class OHCL extends React.Component {
   render() {
     const { props } = this
 
-    const { ceiling, floor } = aggregateNaturalAxisLimits(
+    const { max: maxY, min: minY } = aggregateNaturalAxisLimits(
       Object.values(props.dataSource)
     )
 
-    const { lowerLimit, upperLimit, tick } = getAxisLimits(floor, ceiling)
+    const {
+      lowerLimit: lowerLimitY,
+      upperLimit: upperLimitY,
+      tick: tickY
+    } = getAxisLimits({ max: maxY, min: minY })
+
+    const { lowerLimitX, upperLimitX, tickX } = {
+      lowerLimitX: -1,
+      upperLimitX: props.dataSource.length,
+      tickX: 1
+    }
 
     // console.log({ lowerLimit, upperLimit, tick })
 
@@ -28,23 +38,36 @@ export default class OHCL extends React.Component {
     // const ratio = {
     //   y:
     // }
+    console.log({
+      lowerLimitY,
+      upperLimitY,
+      tickY,
+      lowerLimitX,
+      upperLimitX,
+      tickX
+    })
 
     return (
       <GraphSettings.Provider
         value={{
-          scaleX: 101,
-          scaleY: 30,
-          lowerLimitY: lowerLimit,
-          upperLimitY: upperLimit,
-          tickY: tick
+          chartDomainX: 1000,
+          chartDomainY: 400,
+          paddingX: 70,
+          paddingY: 50,
+          lowerLimitY,
+          upperLimitY,
+          tickY,
+          lowerLimitX,
+          upperLimitX,
+          tickX
         }}
       >
         <Grid>
           <Axis />
-          <GridLines.X />
+          {/* <GridLines.X /> */}
           {props.dataSource.map((serie, index) => {
             return (
-              <Period
+              <Symbol
                 x1={index}
                 x2={index}
                 y1={serie.low}

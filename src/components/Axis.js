@@ -8,51 +8,92 @@ import * as maths from '../utils/math'
 
 const Axis = () => (
   <GraphSettings.Consumer>
-    {({ lowerLimitY, upperLimitY, scaleY, tickY }) => {
-      const labels = fillRange({
+    {({
+      lowerLimitY,
+      upperLimitY,
+      tickY,
+      tickX,
+      lowerLimitX,
+      upperLimitX,
+      paddingX,
+      paddingY,
+      chartDomainX,
+      chartDomainY
+    }) => {
+      const strokeWidth = 2
+      const fontSize = 15
+
+      const labelsY = fillRange({
         lowerLimit: lowerLimitY,
         upperLimit: upperLimitY,
         tick: tickY
       })
 
-      // console.log({ lowerLimitY, upperLimitY, scaleY, tickY })
+      const ratioY = maths.ratio(upperLimitY - lowerLimitY, chartDomainY)
 
-      // console.log({ labels })
+      const labelsX = fillRange({
+        lowerLimit: lowerLimitX,
+        upperLimit: upperLimitX,
+        tick: tickX
+      })
 
-      const ratio = maths.ratio(upperLimitY - lowerLimitY, scaleY)
+      const ratioX = maths.ratio(upperLimitX - lowerLimitX, chartDomainX)
 
-      // console.log({ ratio })
+      console.log({ lowerLimitX, upperLimitX, tickX, labelsX, ratioX })
 
       return (
         <React.Fragment>
-          {labels.map((label, index) => (
+          <MainAxis style={{ strokeWidth }}>
+            <title>Y Axis</title>
+            <line x1={0} x2={0} y1={0} y2={chartDomainY} />
+          </MainAxis>
+          <MainAxis style={{ strokeWidth }}>
+            <title>X Axis</title>
+            <line
+              x1={0}
+              x2={chartDomainX}
+              y1={chartDomainY}
+              y2={chartDomainY}
+            />
+          </MainAxis>
+          {labelsY.map((label, index) => (
             <React.Fragment key={`${label}-${index}`}>
-              <g style={{ fontSize: '1px', textAnchor: 'end' }}>
-                <text x={-0.5} y={(upperLimitY - label) / ratio} dy={0.5}>
+              <g style={{ fontSize, textAnchor: 'end' }}>
+                <title>Y Axis Labels</title>
+                <text x={-20} y={(upperLimitY - label) / ratioY} dy={0.5}>
                   {label}
                 </text>
               </g>
 
               <LabelGroup>
+                <title>Y Axis Indicators</title>
                 <line
-                  x1={-0.35}
+                  x1={-10}
                   x2={0}
-                  y1={(upperLimitY - label) / ratio}
-                  y2={(upperLimitY - label) / ratio}
+                  y1={(upperLimitY - label) / ratioY}
+                  y2={(upperLimitY - label) / ratioY}
                 />
               </LabelGroup>
             </React.Fragment>
           ))}
-
           <g
             style={{
               stroke: '#ccc',
-              strokeDasharray: 0,
-              strokeWidth: 0.2
+              // strokeDasharray: '1%',
+              strokeWidth: 1
             }}
+            transform={`translate(${tickX / ratioX}, 0)`}
           >
-            <line x1={0} x2={0} y1={0} y2={'100%'} />
-            <line x1={0} x2={'100%'} y1={'100%'} y2={'100%'} />
+            <title>X Axis Grid Lines</title>
+            {labelsX.map((label, index) => (
+              <line
+                x1={label / ratioX}
+                x2={label / ratioX}
+                y1={0}
+                y2={chartDomainY}
+                key={`gridLinesX-${index}`}
+              />
+            ))}
           </g>
         </React.Fragment>
       )
@@ -60,12 +101,17 @@ const Axis = () => (
   </GraphSettings.Consumer>
 )
 
+const MainAxis = styled.g`
+  stroke: #ccc;
+  strokedasharray: 0;
+`
+
 const LabelGroup = styled.g`
   /* font-size: 1px;
   text-anchor: end; */
   stroke: #ccc;
   stroke-dasharray: 0;
-  stroke-width: 0.2;
+  stroke-width: 2;
 `
 
 export default Axis
