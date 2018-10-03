@@ -24,7 +24,7 @@ const Symbol = ({ x1, x2, y1, y2, open, close, ...rest }) => (
 
       const status = open > close ? 'bearish' : 'bullish'
 
-      const mainStrokeWidth = 4
+      const mainStrokeWidth = 2.5
 
       const gap = tickX / ratioX
 

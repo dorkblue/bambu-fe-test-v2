@@ -6,7 +6,6 @@ const Grid = ({ children, ...rest }) => (
     {({ chartDomainX, chartDomainY, paddingX, paddingY }) => {
       return (
         <svg
-          style={{ border: '1px dotted red' }}
           width={'100%'}
           height={'100%'}
           // preserveAspectRatio={'none'}
