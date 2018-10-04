@@ -60,8 +60,6 @@ export const fetchSeriesFromApi = SYMBOL => {
         })
         .then(res => res.data)
 
-      console.log({ seriesData })
-
       if (seriesData['Error Message']) {
         dispatch(resetData())
         return dispatch(

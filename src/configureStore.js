@@ -13,9 +13,9 @@ const configureStore = () => {
     })
   }
 
-  const unsubscribe = store.subscribe(() =>
-    console.log({ store: store.getState() })
-  )
+  // const unsubscribe = store.subscribe(() =>
+  //   console.log({ store: store.getState() })
+  // )
   return store
 }
 

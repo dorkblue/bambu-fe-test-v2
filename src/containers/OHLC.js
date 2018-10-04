@@ -176,7 +176,7 @@ class OHCL extends React.Component {
                     y2={serie.high}
                     open={serie.open}
                     close={serie.close}
-                    onClick={() => console.log(serie)}
+                    // onClick={() => console.log(serie)}
                     key={JSON.stringify(serie)}
                   />
                 )
