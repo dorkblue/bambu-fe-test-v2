@@ -20,8 +20,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "npm run build && echo https://ohclchart-shueze.surge.sh > build/CNAME && cp build/index.html build/200.html && surge -p build/"
   },
   "eslintConfig": {
     "extends": "react-app"
