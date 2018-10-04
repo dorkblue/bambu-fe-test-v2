@@ -52,7 +52,10 @@ Due to time constraint, I've opted for [Create-React-App](https://github.com/fac
 #### Symbols Search
 Instead of an onKeyPress event, an onChange event with a debounce function to trigger the API request. 
 
-#### Contact
+#### Code Factorization
+
+Contact
+------
 [Linkedin](https://www.linkedin.com/in/shueze/)
 
 [E-mail](mailto:shueze@gmail.com)
