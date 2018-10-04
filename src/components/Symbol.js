@@ -14,9 +14,7 @@ const Symbol = ({ x1, x2, y1, y2, open, close, ...rest }) => (
       upperLimitX,
       lowerLimitX,
       chartDomainX,
-      tickX,
-      paddingX,
-      paddingY
+      tickX
     }) => {
       const ratioY = maths.ratio(upperLimitY - lowerLimitY, chartDomainY)
 

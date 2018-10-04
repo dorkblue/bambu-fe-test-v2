@@ -7,7 +7,6 @@ const Grid = ({ children, ...rest }) => (
       return (
         <svg
           width={'100%'}
-          // preserveAspectRatio={'none'}
           viewBox={`0 0 ${chartDomainX + paddingX} ${chartDomainY +
             paddingY * 2}`}
           xmlns="http://www.w3.org/2000/svg"

@@ -28,7 +28,6 @@ const Wrapper = styled.div`
 `
 
 const InputWrapper = styled.div`
-  /* height: 50px; */
   padding: 1.5rem;
 `
 

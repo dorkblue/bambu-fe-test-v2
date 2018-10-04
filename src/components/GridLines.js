@@ -17,7 +17,6 @@ export const X = () => (
         <g
           style={{
             stroke: 'hsla(0, 0%, 80%, 0.5)',
-            // strokeDasharray: '1%',
             strokeWidth: 0.5
           }}
           transform={`translate(${tickX / ratioX}, 0)`}

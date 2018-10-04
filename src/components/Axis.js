@@ -20,7 +20,7 @@ export const X = () => (
 
 export const Y = () => (
   <GraphSettings.Consumer>
-    {({ chartDomainX, chartDomainY }) => {
+    {({ chartDomainY }) => {
       const strokeWidth = 2
 
       return (

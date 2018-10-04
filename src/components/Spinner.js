@@ -11,9 +11,6 @@ const donutSpin = keyframes`
 `
 
 const Spinner = styled.div`
-  /* position: absolute; */
-  /* top: 50%;
-  left: 50%; */
   transform: translate(-50% -50%);
   display: inline-block;
   border: 4px solid rgba(0, 0, 0, 0.1);
