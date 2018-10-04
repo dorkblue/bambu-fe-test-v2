@@ -22,6 +22,7 @@ import {
 } from '../utils/data'
 import Title from '../components/Title'
 import Spinner from '../components/Spinner'
+import defaultSymbols from '../constants/defaultSymbols'
 
 class OHCL extends React.Component {
   constructor(props) {
@@ -143,7 +144,13 @@ class OHCL extends React.Component {
 
             <Title
               title={props.metaData.symbol}
-              subTitle={props.metaData.timeZone}
+              subTitle={
+                props.symbols.byIds[props.metaData.symbol]
+                  ? props.symbols.byIds[props.metaData.symbol].name
+                  : defaultSymbols.byIds[props.metaData.symbol]
+                    ? defaultSymbols.byIds[props.metaData.symbol].name
+                    : ''
+              }
             />
           </TitleContainer>
 
@@ -196,6 +203,7 @@ const TitleContainer = styled.div`
 `
 
 const mapStateToProps = ({ symbols, series }) => ({
+  symbols: symbols.data,
   metaData: series.data.metaData,
   dataSource: series.data.allIds.map(id => series.data.byIds[id]),
   seriesLoading: series.status.isLoading,

@@ -4,27 +4,19 @@ import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import qs from 'qs'
 
+import defaultSymbols from '../constants/defaultSymbols'
+
 const Sidebar = ({ location, symbols }) => {
   const query = qs.parse(location.search.replace('?', ''))
 
-  const defaultOptions = [
-    'MSFT',
-    'AAPL',
-    'INTC',
-    'NFLX',
-    'ORCL',
-    'CMCSA',
-    'GOOG',
-    'LUV',
-    'HOG',
-    'GOOGL',
-    'AMZN'
-  ]
-
-  const defaultData = defaultOptions.sort().map(symbol => ({
-    symbol,
-    key: symbol
-  }))
+  const defaultData = defaultSymbols.allIds.map(id => {
+    const symbol = defaultSymbols.byIds[id]
+    return {
+      key: id,
+      name: symbol.name,
+      symbol: symbol.symbol
+    }
+  })
 
   const renderData =
     symbols.allIds.length === 0
