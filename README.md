@@ -1,4 +1,4 @@
-(http://i.imgur.com/H94aR3F.png?1) **Bambu** - OHCL Chart
+**Bambu** - OHCL Chart
 =====
 
 Try the app out [here](https://ohclchart-shueze.surge.sh)
