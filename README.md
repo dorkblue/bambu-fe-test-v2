@@ -43,7 +43,7 @@ I initially planned to use [IEX's API](https://api.iextrading.com/1.0/ref-data/s
 
 I eventually settled down with a list of default symbols, with a search that returns best-matching symbols based on the search term. If available, search results will populate the list of symbols.
 
-Improvements
+Improvements / To-dos
 ------
 
 #### React Scaffolding
