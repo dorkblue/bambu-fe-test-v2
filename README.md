@@ -42,10 +42,10 @@ Improvements
 ------
 
 #### React Scaffolding
-Due to time constraint, I've opt for [Create-React-App](https://github.com/facebook/create-react-app) to bootstrap the app instead of running pure React with Webpack configurations.
+Due to time constraint, I've opted for [Create-React-App](https://github.com/facebook/create-react-app) to bootstrap the app instead of running pure React with Webpack configurations.
 
 #### Symbols Search
 Instead of an onKeyPress event, an onChange event with a debounce function to trigger the API request. 
 
 # Authors
-It is [I](https://github.com/dorkblue)
+[Shue Ze](https://github.com/dorkblue)
