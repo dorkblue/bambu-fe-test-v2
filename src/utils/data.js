@@ -40,11 +40,13 @@ export const getAxisLimits = ({ min = 0, max = 0 }) => {
     500,
     1000,
     2000,
-    5000
+    2500,
+    5000,
+    10000
   ]
 
   const difference = max - min
-  const tick = factorList.find(f => difference / f >= 7 && difference / f <= 13)
+  const tick = factorList.find(f => difference / f >= 5 && difference / f <= 15)
 
   if (!tick)
     return {

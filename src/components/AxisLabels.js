@@ -75,7 +75,7 @@ export const X = ({ labels = [] }) => (
 const LabelGroup = styled.g`
   /* font-size: 1px;
   text-anchor: end; */
-  stroke: #ccc;
+  stroke: hsla(44, 100%, 74%, 1);
   stroke-dasharray: 0;
   stroke-width: 2;
 `

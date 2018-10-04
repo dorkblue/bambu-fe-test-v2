@@ -65,14 +65,12 @@ const Symbol = ({ x1, x2, y1, y2, open, close, ...rest }) => (
 
 const Trunk = styled.g`
   stroke: ${props =>
-    (props.status === 'bearish' && 'red') ||
-    (props.status === 'bullish' && 'green') ||
+    (props.status === 'bearish' && '#d8000c') ||
+    (props.status === 'bullish' && '#5d872c') ||
     'grey'};
   stroke-dasharray: 0;
 `
 
-const Branch = styled.g`
-
-`
+const Branch = styled.g``
 
 export default Symbol

@@ -1,128 +1,88 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import moment from 'moment'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import styled from 'styled-components'
+
+import configureStore from './configureStore'
 
 import OHLC from './containers/OHLC'
-import List from './components/List'
+import Sidebar from './containers/Sidebar'
+import Search from './components/Search';
+
+const store = configureStore()
 
 class App extends Component {
-  state = {
-    data: {
-      metaData: {},
-      allIds: [],
-      byIds: {}
-    }
-  }
-
-  getTimeSeriesDaily = async symbol => {
-    try {
-      const keyMatch = {
-        open: '1. open',
-        high: '2. high',
-        low: '3. low',
-        close: '4. close',
-        volume: '5. volume'
-      }
-
-      const response = await axios
-        .get('https://www.alphavantage.co/query', {
-          params: {
-            function: 'TIME_SERIES_DAILY',
-            symbol,
-            apikey: process.env.REACT_APP_ALPHA_VANTAGE_API_KEY
-          }
-        })
-        .then(res => res.data)
-
-      const [metaDataKey, seriesKey] = Object.keys(response)
-      const { [metaDataKey]: metaData, [seriesKey]: timeSeries } = response
-
-      const allIds = Object.keys(timeSeries).sort((a, b) => {
-        return moment(a).isBefore(b) ? -1 : 1
-      })
-
-      const byIds = Object.entries(timeSeries).reduce(
-        (accu, [id, serie]) => ({
-          ...accu,
-          [id]: {
-            open: +serie[keyMatch.open],
-            high: +serie[keyMatch.high],
-            low: +serie[keyMatch.low],
-            close: +serie[keyMatch.close],
-            volume: +serie[keyMatch.volume]
-          }
-        }),
-        {}
-      )
-
-      return {
-        metaData,
-        allIds,
-        byIds
-      }
-    } catch (error) {
-      throw error
-    }
-  }
-
-  onClick = async symbol => {
-    try {
-      return this.setState({
-        data: await this.getTimeSeriesDaily(symbol)
-      })
-    } catch (error) {
-      console.error(error)
-      throw error
-    }
-  }
-
-  componentDidMount = async () => {
-    try {
-      return this.setState({
-        data: await this.getTimeSeriesDaily('AA')
-      })
-    } catch (error) {}
-  }
-
   render() {
-    console.log(this.state)
-    const { state } = this
-    const stockOptions = [
-      'MSFT',
-      'AAPL',
-      'INTC',
-      'NFLX',
-      'ORCL',
-      'CMCSA',
-      'GOOG',
-      'LUV',
-      'HOG',
-      'GOOGL',
-      'AMZN'
-    ]
-
-    const listData = stockOptions.map(name => ({
-      name,
-      key: name,
-      onClick: () => this.onClick(name)
-    }))
-
     return (
-      <div className="App" style={{ minHeight: '100vh' }}>
-        <main
-          style={{ display: 'flex', alignItems: 'stretch', height: '100%' }}
-        >
-          <List dataSource={listData} />
-          <OHLC
-            dataSource={state.data.allIds.map(id => ({
-              ...state.data.byIds[id],
-              date: id
-            }))}
-          />
-        </main>
-      </div>
+      <Provider store={store}>
+        <BrowserRouter>
+          <AppWrapper>
+            <header>
+              <h1>
+                <span>OHLC</span> Chart
+              </h1>
+            </header>
+            <main>
+              <div className={'sidebar'}>
+                <Search />
+                <Sidebar />
+              </div>
+              <div className={'content'}>
+                <Switch>
+                  <Route exact path="/" component={OHLC} />
+                </Switch>
+              </div>
+            </main>
+          </AppWrapper>
+        </BrowserRouter>
+      </Provider>
     )
   }
 }
+
+const AppWrapper = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  header {
+    position: relative;
+    flex: 0 1 auto;
+    padding: 0.5rem 1rem;
+    background-color: #212121;
+
+    h1 {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.8);
+      span {
+        color: #e0a445;
+      }
+    }
+  }
+
+  main {
+    position: relative;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: stretch;
+    background-color: whitesmoke;
+
+    .sidebar {
+      flex: 0 1 220px;
+    }
+
+    .content {
+      position: relative;
+      flex: 1 1 auto;
+      background-color: white;
+    }
+  }
+
+  footer {
+    position: relative;
+    flex: 0 1 auto;
+    padding: 0.5rem 1rem;
+  }
+`
 
 export default App

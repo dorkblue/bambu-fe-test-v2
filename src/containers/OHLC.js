@@ -1,11 +1,17 @@
 import React from 'react'
+import styled from 'styled-components'
+import { connect } from 'react-redux'
 import moment from 'moment'
+import qs from 'qs'
+
+import { fetchSeriesFromApi } from '../actionCreators/seriesAction'
 
 import Grid from '../components/Grid'
 import * as Axis from '../components/Axis'
 import * as AxisLabels from '../components/AxisLabels'
 import * as GridLines from '../components/GridLines'
 import Symbol from '../components/Symbol'
+import Alert from '../components/Alert'
 
 import { GraphSettings } from '../Context'
 
@@ -14,13 +20,42 @@ import {
   getAxisLimits,
   fillRange
 } from '../utils/data'
+import Title from '../components/Title'
+import Spinner from '../components/Spinner'
 
-export default class OHCL extends React.Component {
+class OHCL extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
+
+  componentDidMount = async () => {
+    if (this.props.location.search) {
+      const query = qs.parse(this.props.location.search.replace('?', ''))
+      try {
+        await this.props.fetchSeriesFromApi(query.symbol)
+      } catch (error) {
+        throw error
+      }
+    }
+  }
+
+  componentDidUpdate = async prevProps => {
+    if (this.props.location.search !== prevProps.location.search) {
+      const query = qs.parse(this.props.location.search.replace('?', ''))
+      try {
+        await this.props.fetchSeriesFromApi(query.symbol)
+      } catch (error) {
+        throw error
+      }
+    }
+  }
+
   render() {
     const { props } = this
 
     const { max: maxY, min: minY } = aggregateNaturalAxisLimits(
-      Object.values(props.dataSource)
+      props.dataSource
     )
 
     const {
@@ -81,11 +116,6 @@ export default class OHCL extends React.Component {
 
     const labelsX = Object.values(labelsXByMonth)
 
-    // const labelsX = props.dataSource.map(({ date }, index) => console.log(date) || ({
-    //   title: `${moment(date).get('date')}`,
-    //   value: index
-    // }), {})
-
     return (
       <GraphSettings.Provider
         value={{
@@ -101,36 +131,78 @@ export default class OHCL extends React.Component {
           tickX
         }}
       >
-        <div
-          style={{
-            // maxHeight: '500px',
-            width: '100%',
-            padding: '1rem'
-          }}
-        >
-          <Grid>
-            <GridLines.X />
-            <Axis.X />
-            <Axis.Y />
-            <AxisLabels.Y labels={labelsY} />
-            <AxisLabels.X labels={labelsX} />
-            {props.dataSource.map((serie, index) => {
-              return (
-                <Symbol
-                  x1={index}
-                  x2={index}
-                  y1={serie.low}
-                  y2={serie.high}
-                  open={serie.open}
-                  close={serie.close}
-                  onClick={() => console.log(serie)}
-                  key={JSON.stringify(serie)}
-                />
-              )
-            })}
-          </Grid>
-        </div>
+        <Wrapper>
+          <TitleContainer>
+            {props.seriesLoading && (
+              <Spinner
+                style={{
+                  margin: '1rem'
+                }}
+              />
+            )}
+
+            <Title
+              title={props.metaData.symbol}
+              subTitle={props.metaData.timeZone}
+            />
+          </TitleContainer>
+
+          <Alert type={'error'} messages={props.errors} />
+          <div
+            className={'graph'}
+            style={{
+              flex: '1 1 auto'
+            }}
+          >
+            <Grid>
+              <GridLines.X />
+              <Axis.X />
+              <Axis.Y />
+              <AxisLabels.X labels={labelsX} />
+              <AxisLabels.Y labels={labelsY} />
+              {props.dataSource.map((serie, index) => {
+                return (
+                  <Symbol
+                    x1={index}
+                    x2={index}
+                    y1={serie.low}
+                    y2={serie.high}
+                    open={serie.open}
+                    close={serie.close}
+                    onClick={() => console.log(serie)}
+                    key={JSON.stringify(serie)}
+                  />
+                )
+              })}
+            </Grid>
+          </div>
+        </Wrapper>
       </GraphSettings.Provider>
     )
   }
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+`
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
+
+const mapStateToProps = ({ symbols, series }) => ({
+  metaData: series.data.metaData,
+  dataSource: series.data.allIds.map(id => series.data.byIds[id]),
+  seriesLoading: series.status.isLoading,
+  errors: series.errors
+})
+
+export default connect(
+  mapStateToProps,
+  { fetchSeriesFromApi }
+)(OHCL)

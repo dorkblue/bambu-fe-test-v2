@@ -34,6 +34,6 @@ export const Y = () => (
 )
 
 const MainAxis = styled.g`
-  stroke: #ccc;
+  stroke: hsla(44, 100%, 74%, 1);
   strokedasharray: 0;
 `
