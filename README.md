@@ -25,7 +25,7 @@ Development Stage
 * Chart should display all period of loaded data
 * No boilerplate & scaffolding
 
-#### Graph & Chart (ERD)
+#### Graph & Chart
 Based on the requirements, I immediately recognized the need to *draw* the chart with SVG, and proceeded to kickstart the development by setting up a `React` app using [Create-React-App](https://github.com/facebook/create-react-app).
 
 A skeleton React component was set up with a list of the provided symbols, that triggers an `onClick` event when clicked to make the API call to [Alpha Vantage's API](https://www.alphavantage.co/).
